@@ -31,7 +31,7 @@ import ```'package:authorize_net_sdk_plugin/authorize_net_sdk_plugin.dart'; ```
 ```final authNet = AuthorizeNetSdkPlugin();```
 4. Generate a payment nonce
 ```
-final nonce = await authNet.generateNonce(
+final nonce = await authorizeNet.generateNonce(
   apiLoginId: 'YOUR_API_LOGIN_ID',
   clientKey: 'YOUR_CLIENT_KEY',
   cardNumber: '4111111111111111',

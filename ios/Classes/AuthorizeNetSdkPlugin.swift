@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import AcceptSDK
+import WDePOS
 
 public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
@@ -11,42 +11,47 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     if call.method == "generateNonce" {
-        guard let args = call.arguments as? [String: Any],
-              let apiLoginId = args["apiLoginId"] as? String,
-              let clientKey = args["clientKey"] as? String,
-              let cardNumber = args["cardNumber"] as? String,
-              let expirationMonth = args["expirationMonth"] as? String,
-              let expirationYear = args["expirationYear"] as? String,
-              let cardCode = args["cardCode"] as? String else {
-            result(FlutterError(code: "INVALID_ARGS", message: "Parâmetros inválidos", details: nil))
-            return
+      guard let args = call.arguments as? [String: Any],
+            let apiLoginId = args["apiLoginId"] as? String,
+            let clientKey = args["clientKey"] as? String,
+            let cardNumber = args["cardNumber"] as? String,
+            let expirationMonth = args["expirationMonth"] as? String,
+            let expirationYear = args["expirationYear"] as? String,
+            let cardCode = args["cardCode"] as? String else {
+        result(FlutterError(code: "INVALID_ARGS", message: "Parâmetros inválidos", details: nil))
+        return
+      }
+
+      // Configuração do ambiente (teste ou produção)
+      let environment: WDEPOSEnvironment = .test
+      
+      // Configuração da autenticação do comerciante
+      let merchantAuthentication = WDEPOSMerchantAuthentication()
+      merchantAuthentication.apiLoginID = apiLoginId
+      merchantAuthentication.clientKey = clientKey
+      
+      // Dados do cartão
+      let card = WDEPOSCard()
+      card.cardNumber = cardNumber
+      card.expirationMonth = expirationMonth
+      card.expirationYear = expirationYear
+      card.cardCode = cardCode
+      
+      // Criando o serviço do WDePOS
+      let wdeposService = WDEPOSService(environment: environment, merchantAuthentication: merchantAuthentication)
+      
+      // Solicitar o token de pagamento (nonce)
+      wdeposService.generateToken(with: card) { (token, error) in
+        if let token = token {
+          result(token)
+        } else if let error = error {
+          result(FlutterError(code: "ERROR", message: error.localizedDescription, details: nil))
+        } else {
+          result(FlutterError(code: "UNKNOWN", message: "Erro desconhecido", details: nil))
         }
-
-        let handler = AcceptSDKHandler(environment: .ENV_TEST)
-
-        let cardData = AcceptSDKCardData()
-        cardData.cardNumber = cardNumber
-        cardData.expirationMonth = expirationMonth
-        cardData.expirationYear = expirationYear
-        cardData.cardCode = cardCode
-
-        let request = AcceptSDKRequest()
-        request.merchantAuthentication.name = apiLoginId
-        request.merchantAuthentication.clientKey = clientKey
-        request.dataDescriptor = "COMMON.ACCEPT.INAPP.PAYMENT"
-        request.cardData = cardData
-
-        handler.getTokenWithRequest(request) { (response) in
-            if let opaqueData = response?.opaqueData?.dataValue {
-                result(opaqueData)
-            } else if let error = response?.messages?.message.first?.text {
-                result(FlutterError(code: "ERROR", message: error, details: nil))
-            } else {
-                result(FlutterError(code: "UNKNOWN", message: "Erro desconhecido", details: nil))
-            }
-        }
+      }
     } else {
-        result(FlutterMethodNotImplemented)
+      result(FlutterMethodNotImplemented)
     }
   }
 }
