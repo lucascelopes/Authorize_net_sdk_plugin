@@ -1,4 +1,6 @@
 import 'authorize_net_sdk_plugin_platform_interface.dart';
+export 'authorize_net_sdk_plugin_web_stub.dart'
+    if (dart.library.html) 'authorize_net_sdk_plugin_web.dart';
 
 class AuthorizeNetSdkPlugin {
   /// Gera o nonce/token para pagamento, chamando a implementação nativa via platform interface.

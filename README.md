@@ -59,15 +59,29 @@ pod 'WDePOS/All'
 
    ```dart
    final nonce = await authNet.generateNonce(
-     apiLoginId: 'YOUR_API_LOGIN_ID',
-     clientKey: 'YOUR_CLIENT_KEY',
-     cardNumber: '4111111111111111',
-     expirationMonth: '12',
-     expirationYear: '25',
-     cardCode: '123',
-   );
+      apiLoginId: 'YOUR_API_LOGIN_ID',
+      clientKey: 'YOUR_CLIENT_KEY',
+      cardNumber: '4111111111111111',
+      expirationMonth: '12',
+      expirationYear: '25',
+      cardCode: '123',
+    );
 
-   print('Generated nonce: $nonce');
+    print('Generated nonce: $nonce');
 
-   // Send this nonce securely to your backend to complete the payment
-   ```
+    // Send this nonce securely to your backend to complete the payment
+    ```
+
+### Web Support
+
+For Flutter Web you must load Authorize.Net's Accept.js library. Add the
+following script tag to your application's `web/index.html`:
+
+```html
+<script src="packages/authorize_net_sdk_plugin/authorize_net_sdk_plugin.js" defer></script>
+```
+
+This helper script injects the official Accept.js script so that
+`generateNonce` works in the browser.
+
+Use the plugin in your Dart code exactly as shown above.
