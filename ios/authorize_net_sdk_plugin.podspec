@@ -11,7 +11,7 @@ Plugin Flutter para integrar com o Authorize.net usando o WDePOS SDK no iOS.
   DESC
   s.homepage         = 'https://github.com/lucascelopes/Authorize_net_sdk_plugin'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Nagazaki Software' => 'email@example.com' }
+  s.author           = { 'Nagazaki Software' => 'lucascesarlopes@nagazakisofware.com.br' }
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.platform         = :ios, '12.0'
