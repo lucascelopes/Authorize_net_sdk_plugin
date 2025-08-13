@@ -76,4 +76,54 @@ void main() {
 
     expect(nonce, fakeNonce);
   });
+
+  test('generateNonce throws PlatformException on missing parameter', () {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'generateNonce') {
+        final args = methodCall.arguments as Map;
+        if ((args['cardCode'] as String).isEmpty) {
+          throw PlatformException(code: 'INVALID_ARGS');
+        }
+      }
+      return null;
+    });
+
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: 'apiLoginId',
+        clientKey: 'clientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '',
+        environment: 'test',
+      ),
+      throwsA(isA<PlatformException>()),
+    );
+  });
+
+  test('generateNonce throws when isReady reports false', () {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        return false;
+      }
+      if (methodCall.method == 'generateNonce') {
+        throw PlatformException(code: 'NOT_READY');
+      }
+      return null;
+    });
+
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: 'apiLoginId',
+        clientKey: 'clientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '123',
+        environment: 'test',
+      ),
+      throwsA(isA<PlatformException>()),
+    );
+  });
 }
