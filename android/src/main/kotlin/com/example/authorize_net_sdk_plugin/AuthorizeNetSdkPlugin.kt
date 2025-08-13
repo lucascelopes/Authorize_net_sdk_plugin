@@ -1,6 +1,8 @@
 package com.example.authorize_net_sdk_plugin
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.NonNull
 import com.wdepos.sdk.WDePOSService
 import com.wdepos.sdk.WDePOSServiceCallback
@@ -66,11 +68,15 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
             // Chama geração do token (nonce)
             wdeposService.generateToken(card, object : WDePOSServiceCallback {
                 override fun onSuccess(token: String) {
-                    result.success(token)
+                    Handler(Looper.getMainLooper()).post {
+                        result.success(token)
+                    }
                 }
 
                 override fun onFailure(errorMessage: String) {
-                    result.error("ERROR", errorMessage, null)
+                    Handler(Looper.getMainLooper()).post {
+                        result.error("ERROR", errorMessage, null)
+                    }
                 }
             })
 
