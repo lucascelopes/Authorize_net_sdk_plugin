@@ -25,7 +25,9 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (call.method == "generateNonce") {
+        if (call.method == "isReady") {
+            result.success(isSdkAvailable())
+        } else if (call.method == "generateNonce") {
             val apiLoginId = call.argument<String>("apiLoginId") ?: ""
             val clientKey = call.argument<String>("clientKey") ?: ""
             val cardNumber = call.argument<String>("cardNumber") ?: ""
@@ -81,5 +83,14 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
+    }
+
+    private fun isSdkAvailable(): Boolean {
+        return try {
+            Class.forName("com.wdepos.sdk.WDePOSService")
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

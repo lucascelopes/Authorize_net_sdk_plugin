@@ -16,9 +16,28 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('isReady returns true', () async {
+  test('isReady returns true when native reports ready', () async {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        return true;
+      }
+      return null;
+    });
+
     final ready = await plugin.isReady();
     expect(ready, true);
+  });
+
+  test('isReady returns false on platform error', () async {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        throw PlatformException(code: 'UNAVAILABLE');
+      }
+      return null;
+    });
+
+    final ready = await plugin.isReady();
+    expect(ready, false);
   });
 
   test('getPlatformVersion returns correct version', () async {

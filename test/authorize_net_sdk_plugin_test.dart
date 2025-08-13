@@ -6,11 +6,12 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockAuthorizeNetSdkPluginPlatform
     with MockPlatformInterfaceMixin
     implements AuthorizeNetSdkPluginPlatform {
+  bool ready = true;
   @override
   Future<String?> getPlatformVersion() async => '42';
 
   @override
-  Future<bool> isReady() async => true;
+  Future<bool> isReady() async => ready;
 
   @override
   Future<String?> generateNonce({
@@ -37,6 +38,12 @@ void main() {
   test('isReady returns true', () async {
     final ready = await plugin.isReady();
     expect(ready, true);
+  });
+
+  test('isReady returns false', () async {
+    mockPlatform.ready = false;
+    final ready = await plugin.isReady();
+    expect(ready, false);
   });
 
   test('getPlatformVersion returns mocked version', () async {

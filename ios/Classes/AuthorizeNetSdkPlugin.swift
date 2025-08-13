@@ -52,6 +52,9 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
           result(FlutterError(code: "UNKNOWN", message: "Erro desconhecido", details: nil))
         }
       }
+    } else if call.method == "isReady" {
+      let ready = (NSClassFromString("WDEPOSService") != nil)
+      result(ready)
     } else if call.method == "getPlatformVersion" {
       result(UIDevice.current.systemVersion)
     } else {
