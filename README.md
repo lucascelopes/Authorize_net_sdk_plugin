@@ -1,16 +1,13 @@
 # authorize_net_sdk_plugin 🚀
 
-A Flutter plugin for seamless and secure integration with the Authorize.Net API — enabling credit card, debit card, and other payment methods directly within your Flutter app.
+A Flutter plugin that securely generates Authorize.Net payment nonce tokens from card details within your Flutter app.
 
 ---
 
 ## ✨ Key Features
 
-- 🔐 Secure authentication with Authorize.Net API  
-- 💳 Create and manage payment transactions  
-- 💼 Support for multiple payment methods  
-- 🔍 Transaction status and history queries  
-- ⚡ Easy-to-use integration for Flutter applications  
+- 🔑 Generate secure payment nonce/token for Authorize.Net
+- 🌐 Simple Flutter integration on Android, iOS, and Web
 
 ---
 
@@ -20,7 +17,7 @@ Add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  authorize_net_sdk_plugin: ^0.0.4
+  authorize_net_sdk_plugin: ^0.0.5
 ```
 
 ### Android
