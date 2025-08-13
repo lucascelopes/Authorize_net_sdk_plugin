@@ -22,7 +22,23 @@ class MockAuthorizeNetSdkPluginPlatform
     required String expirationYear,
     required String cardCode,
     String environment = 'test',
-  }) async => 'mocked_nonce_123';
+  }) async {
+    if (!ready) {
+      throw StateError('Plugin not ready');
+    }
+    final params = [
+      apiLoginId,
+      clientKey,
+      cardNumber,
+      expirationMonth,
+      expirationYear,
+      cardCode,
+    ];
+    if (params.any((p) => p.isEmpty)) {
+      throw ArgumentError('Missing parameter');
+    }
+    return 'mocked_nonce_123';
+  }
 }
 
 void main() {
@@ -62,5 +78,36 @@ void main() {
       environment: 'test',
     );
     expect(nonce, 'mocked_nonce_123');
+  });
+
+  test('generateNonce throws when plugin not ready', () {
+    mockPlatform.ready = false;
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: 'dummyApiLoginId',
+        clientKey: 'dummyClientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '123',
+        environment: 'test',
+      ),
+      throwsA(isA<StateError>()),
+    );
+  });
+
+  test('generateNonce throws when required parameter is empty', () {
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: '',
+        clientKey: 'dummyClientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '123',
+        environment: 'test',
+      ),
+      throwsA(isA<ArgumentError>()),
+    );
   });
 }
