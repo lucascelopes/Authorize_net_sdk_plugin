@@ -31,6 +31,7 @@ abstract class AuthorizeNetSdkPluginPlatform extends PlatformInterface {
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) {
     throw UnimplementedError('generateNonce() has not been implemented.');
   }

@@ -50,6 +50,7 @@ class _MyAppState extends State<MyApp> {
         expirationMonth: '12',
         expirationYear: '2030',
         cardCode: '123',
+        environment: 'test',
       );
       if (!mounted) return;
       setState(() {

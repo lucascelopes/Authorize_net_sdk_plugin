@@ -38,7 +38,8 @@ void main() {
 
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'generateNonce') {
-        // Você pode checar args aqui se quiser
+        final args = methodCall.arguments as Map;
+        expect(args['environment'], 'test');
         return fakeNonce;
       }
       return null;
@@ -51,6 +52,7 @@ void main() {
       expirationMonth: '12',
       expirationYear: '25',
       cardCode: '123',
+      environment: 'test',
     );
 
     expect(nonce, fakeNonce);
