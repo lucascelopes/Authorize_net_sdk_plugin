@@ -67,6 +67,8 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
                 }
             })
 
+        } else if (call.method == "getPlatformVersion") {
+            result.success(android.os.Build.VERSION.RELEASE)
         } else {
             result.notImplemented()
         }

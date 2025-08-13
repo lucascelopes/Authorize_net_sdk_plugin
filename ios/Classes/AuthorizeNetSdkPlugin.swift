@@ -50,6 +50,8 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
           result(FlutterError(code: "UNKNOWN", message: "Erro desconhecido", details: nil))
         }
       }
+    } else if call.method == "getPlatformVersion" {
+      result(UIDevice.current.systemVersion)
     } else {
       result(FlutterMethodNotImplemented)
     }
