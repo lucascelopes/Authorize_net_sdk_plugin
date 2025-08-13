@@ -45,7 +45,12 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
       'environment': environment,
     };
 
-    final nonce = await _channel.invokeMethod<String>('generateNonce', args);
-    return nonce;
+    try {
+      final nonce =
+          await _channel.invokeMethod<String>('generateNonce', args);
+      return nonce;
+    } on PlatformException catch (e) {
+      throw Exception('Erro (${e.code}): ${e.message}');
+    }
   }
 }
