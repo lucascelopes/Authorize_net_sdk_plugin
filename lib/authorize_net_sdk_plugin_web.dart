@@ -37,6 +37,16 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
       return completer.future;
     }
 
+    if (apiLoginId.isEmpty ||
+        clientKey.isEmpty ||
+        cardNumber.isEmpty ||
+        expirationMonth.isEmpty ||
+        expirationYear.isEmpty ||
+        cardCode.isEmpty) {
+      completer.completeError('Parâmetros inválidos ou faltando');
+      return completer.future;
+    }
+
     final authData = js.JsObject.jsify({
       'clientKey': clientKey,
       'apiLoginID': apiLoginId,
