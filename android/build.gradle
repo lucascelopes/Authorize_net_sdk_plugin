@@ -29,12 +29,11 @@ android {
 repositories {
     google()
     mavenCentral()
-    // Se tiver repositório Maven do WDePOS, adicione aqui
-    // maven { url "https://maven.wdepos.com/repository/maven-public/" }
+    maven { url "https://maven.wdepos.com/repository/maven-public/" }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.21"
-    // Dependência WDePOS (ajuste para o correto)
-    implementation 'com.wdepos:sdk:1.0.0'
+    // Dependência WDePOS atualizada
+    implementation 'com.wdepos:sdk:1.0.11'
 }
