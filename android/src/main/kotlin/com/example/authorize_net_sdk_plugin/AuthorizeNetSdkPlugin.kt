@@ -1,4 +1,4 @@
-package com.nagazakisoftware.authorize_net_sdk_plugin
+package com.example.authorize_net_sdk_plugin
 
 import android.content.Context
 import androidx.annotation.NonNull

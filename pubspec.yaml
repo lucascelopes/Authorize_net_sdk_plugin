@@ -23,7 +23,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.nagazakisoftware.authorize_net_sdk_plugin
+        package: com.example.authorize_net_sdk_plugin
         pluginClass: AuthorizeNetSdkPlugin
       ios:
         pluginClass: AuthorizeNetSdkPlugin
