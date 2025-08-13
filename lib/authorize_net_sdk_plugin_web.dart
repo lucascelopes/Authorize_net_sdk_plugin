@@ -62,8 +62,16 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
           final dataValue = response['opaqueData']['dataValue'] as String?;
           completer.complete(dataValue);
         } else {
-          final message = (response['messages']['message'] as List).first;
-          completer.completeError(message['text'] ?? 'Accept.js error');
+          final messages = response['messages'];
+          final messageList = messages is Map
+              ? messages['message'] as List?
+              : null;
+          if (messageList != null && messageList.isNotEmpty) {
+            final message = messageList.first;
+            completer.completeError(message['text'] ?? 'Accept.js error');
+          } else {
+            completer.completeError('Accept.js error');
+          }
         }
       }),
     ]);
