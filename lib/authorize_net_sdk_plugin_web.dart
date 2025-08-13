@@ -18,6 +18,9 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
   Future<String?> getPlatformVersion() async => 'web';
 
   @override
+  Future<bool> isReady() async => js.context['Accept'] != null;
+
+  @override
   Future<String?> generateNonce({
     required String apiLoginId,
     required String clientKey,
@@ -27,6 +30,11 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
     required String cardCode,
   }) {
     final completer = Completer<String?>();
+
+    if (js.context['Accept'] == null) {
+      completer.completeError('Accept.js is not loaded');
+      return completer.future;
+    }
 
     final authData = js.JsObject.jsify({
       'clientKey': clientKey,

@@ -14,6 +14,9 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
     return version;
   }
 
+  @override
+  Future<bool> isReady() async => true;
+
   // Método que chama o código nativo para gerar o nonce de pagamento
   @override
   Future<String?> generateNonce({

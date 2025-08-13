@@ -10,6 +10,9 @@ class MockAuthorizeNetSdkPluginPlatform
   Future<String?> getPlatformVersion() async => '42';
 
   @override
+  Future<bool> isReady() async => true;
+
+  @override
   Future<String?> generateNonce({
     required String apiLoginId,
     required String clientKey,
@@ -28,6 +31,11 @@ void main() {
     plugin = AuthorizeNetSdkPlugin();
     mockPlatform = MockAuthorizeNetSdkPluginPlatform();
     AuthorizeNetSdkPluginPlatform.instance = mockPlatform;
+  });
+
+  test('isReady returns true', () async {
+    final ready = await plugin.isReady();
+    expect(ready, true);
   });
 
   test('getPlatformVersion returns mocked version', () async {
