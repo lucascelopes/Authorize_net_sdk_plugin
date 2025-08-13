@@ -32,6 +32,22 @@ void main() {
       );
     });
 
+    test('generateNonce throws when any field is empty', () async {
+      js.context['Accept'] = js.JsObject.jsify({});
+
+      await expectLater(
+        plugin.generateNonce(
+          apiLoginId: '',
+          clientKey: 'clientKey',
+          cardNumber: '4111111111111111',
+          expirationMonth: '12',
+          expirationYear: '25',
+          cardCode: '123',
+        ),
+        throwsA('Parâmetros inválidos ou faltando'),
+      );
+    });
+
     test('generateNonce throws when response has no messages', () async {
       js.context['Accept'] = js.JsObject.jsify({
         'dispatchData': js.allowInterop((secureData, callback) {
