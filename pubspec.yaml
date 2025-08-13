@@ -1,6 +1,6 @@
 name: authorize_net_sdk_plugin
 description: Flutter plugin for seamless integration with the Authorize.Net payment API.
-version: 0.0.4
+version: 0.0.5
 author: Lucas César Lopes <lucascesarlopes@nagazakisofware.com.br>
 homepage: https://github.com/lucascelopes/Authorize_net_sdk_plugin
 repository: https://github.com/lucascelopes/Authorize_net_sdk_plugin
