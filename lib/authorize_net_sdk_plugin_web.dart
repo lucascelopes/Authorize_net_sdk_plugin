@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:js' as js;
+import 'dart:html' as html;
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -29,7 +30,9 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
     required String expirationYear,
     required String cardCode,
     String environment = 'test',
-  }) {
+  }) async {
+    await _ensureAcceptJs(environment);
+
     final completer = Completer<String?>();
 
     if (js.context['Accept'] == null) {
@@ -86,6 +89,30 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
       }),
     ]);
 
+    return completer.future;
+  }
+
+  Future<void> _ensureAcceptJs(String environment) {
+    final existingEnv = js.context['__acceptJsEnv'] as String?;
+    if (js.context['Accept'] != null && existingEnv == environment) {
+      return Future.value();
+    }
+
+    final completer = Completer<void>();
+    final script = html.ScriptElement();
+    final url = environment == 'test'
+        ? 'https://jstest.authorize.net/v1/Accept.js'
+        : 'https://js.authorize.net/v1/Accept.js';
+    script.src = url;
+    script.type = 'text/javascript';
+    script.onLoad.listen((_) {
+      js.context['__acceptJsEnv'] = environment;
+      completer.complete();
+    });
+    script.onError.listen((_) {
+      completer.completeError('Failed to load Accept.js');
+    });
+    html.document.head!.append(script);
     return completer.future;
   }
 }
