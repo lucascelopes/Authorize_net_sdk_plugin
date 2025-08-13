@@ -25,6 +25,7 @@ class AuthorizeNetSdkPluginWeb extends AuthorizeNetSdkPluginPlatform {
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) {
     final completer = Completer<String?>();
 

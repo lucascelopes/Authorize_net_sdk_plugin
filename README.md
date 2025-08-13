@@ -57,7 +57,10 @@ pod 'WDePOS/All'
 
 3. Generate a payment nonce:
 
+   Pass the `environment` parameter as `'test'` or `'production'` to select the Authorize.Net environment.
+
    ```dart
+   // Using the test environment
    final nonce = await authNet.generateNonce(
       apiLoginId: 'YOUR_API_LOGIN_ID',
       clientKey: 'YOUR_CLIENT_KEY',
@@ -65,12 +68,27 @@ pod 'WDePOS/All'
       expirationMonth: '12',
       expirationYear: '25',
       cardCode: '123',
+      environment: 'test', // or 'production'
     );
 
     print('Generated nonce: $nonce');
 
     // Send this nonce securely to your backend to complete the payment
     ```
+
+   To use the production environment, set `environment: 'production'`:
+
+   ```dart
+   final prodNonce = await authNet.generateNonce(
+      apiLoginId: 'YOUR_API_LOGIN_ID',
+      clientKey: 'YOUR_CLIENT_KEY',
+      cardNumber: '4111111111111111',
+      expirationMonth: '12',
+      expirationYear: '25',
+      cardCode: '123',
+      environment: 'production',
+    );
+   ```
 
 ### Web Support
 

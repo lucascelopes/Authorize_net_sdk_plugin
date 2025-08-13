@@ -17,6 +17,7 @@ class MockAuthorizeNetSdkPluginPlatform
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) async => 'mocked_nonce_123';
 }
 
@@ -43,6 +44,7 @@ void main() {
       expirationMonth: '12',
       expirationYear: '25',
       cardCode: '123',
+      environment: 'test',
     );
     expect(nonce, 'mocked_nonce_123');
   });
