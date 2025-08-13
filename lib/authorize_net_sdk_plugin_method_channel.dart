@@ -23,6 +23,7 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) async {
     final args = {
       'apiLoginId': apiLoginId,
@@ -31,6 +32,7 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
       'expirationMonth': expirationMonth,
       'expirationYear': expirationYear,
       'cardCode': cardCode,
+      'environment': environment,
     };
 
     final nonce = await _channel.invokeMethod<String>('generateNonce', args);

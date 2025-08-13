@@ -9,6 +9,7 @@ class AuthorizeNetSdkPlugin {
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) {
     return AuthorizeNetSdkPluginPlatform.instance.generateNonce(
       apiLoginId: apiLoginId,
@@ -17,6 +18,7 @@ class AuthorizeNetSdkPlugin {
       expirationMonth: expirationMonth,
       expirationYear: expirationYear,
       cardCode: cardCode,
+      environment: environment,
     );
   }
 

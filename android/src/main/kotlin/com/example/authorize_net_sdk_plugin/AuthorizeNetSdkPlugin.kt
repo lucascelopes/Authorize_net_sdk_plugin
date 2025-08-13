@@ -32,6 +32,7 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
             val expirationMonth = call.argument<String>("expirationMonth") ?: ""
             val expirationYear = call.argument<String>("expirationYear") ?: ""
             val cardCode = call.argument<String>("cardCode") ?: ""
+            val environmentArg = call.argument<String>("environment") ?: "test"
 
             if (apiLoginId.isEmpty() || clientKey.isEmpty() || cardNumber.isEmpty() || expirationMonth.isEmpty() || expirationYear.isEmpty() || cardCode.isEmpty()) {
                 result.error("INVALID_ARGS", "Parâmetros inválidos ou faltando", null)
@@ -39,7 +40,11 @@ public class AuthorizeNetSdkPlugin : FlutterPlugin, MethodChannel.MethodCallHand
             }
 
             // Configura o ambiente (sandbox/teste ou produção)
-            val environment = WDePOSEnvironment.TEST
+            val environment = if (environmentArg.equals("production", ignoreCase = true)) {
+                WDePOSEnvironment.PRODUCTION
+            } else {
+                WDePOSEnvironment.TEST
+            }
 
             // Configura autenticação do comerciante
             val merchantAuth = WDePOSMerchantAuthentication()

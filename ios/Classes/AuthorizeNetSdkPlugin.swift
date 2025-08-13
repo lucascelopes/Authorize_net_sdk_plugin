@@ -22,8 +22,10 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
         return
       }
 
+      let environmentArg = (args["environment"] as? String ?? "test").lowercased()
+
       // Configuração do ambiente (teste ou produção)
-      let environment: WDEPOSEnvironment = .test
+      let environment: WDEPOSEnvironment = environmentArg == "production" ? .production : .test
       
       // Configuração da autenticação do comerciante
       let merchantAuthentication = WDEPOSMerchantAuthentication()

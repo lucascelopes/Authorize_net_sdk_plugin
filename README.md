@@ -38,9 +38,12 @@ final nonce = await authorizeNet.generateNonce(
   expirationMonth: '12',
   expirationYear: '25',
   cardCode: '123',
+  environment: 'test', // or 'production'
 );
 
 print('Generated nonce: $nonce');
 
 // Send this nonce securely to your backend to complete the payment
 ```
+
+The `environment` parameter is optional and defaults to `'test'`. Use `'production'` when processing real transactions.
