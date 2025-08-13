@@ -3,6 +3,11 @@ export 'authorize_net_sdk_plugin_web_stub.dart'
     if (dart.library.html) 'authorize_net_sdk_plugin_web.dart';
 
 class AuthorizeNetSdkPlugin {
+  /// Checks if the underlying implementation is ready to generate a nonce.
+  Future<bool> isReady() {
+    return AuthorizeNetSdkPluginPlatform.instance.isReady();
+  }
+
   /// Gera o nonce/token para pagamento, chamando a implementação nativa via platform interface.
   Future<String?> generateNonce({
     required String apiLoginId,

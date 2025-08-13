@@ -16,6 +16,11 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
+  test('isReady returns true', () async {
+    final ready = await plugin.isReady();
+    expect(ready, true);
+  });
+
   test('getPlatformVersion returns correct version', () async {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getPlatformVersion') {

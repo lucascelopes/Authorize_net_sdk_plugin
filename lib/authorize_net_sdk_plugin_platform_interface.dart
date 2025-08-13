@@ -20,6 +20,10 @@ abstract class AuthorizeNetSdkPluginPlatform extends PlatformInterface {
     throw UnimplementedError('getPlatformVersion() has not been implemented.');
   }
 
+  Future<bool> isReady() {
+    throw UnimplementedError('isReady() has not been implemented.');
+  }
+
   Future<String?> generateNonce({
     required String apiLoginId,
     required String clientKey,
