@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nagazakisoftware.authorize_net_sdk_plugin"
+    namespace = "com.example.authorize_net_sdk_plugin"
     compileSdk = 35
 
     defaultConfig {
