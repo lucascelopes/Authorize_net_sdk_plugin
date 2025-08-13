@@ -2,6 +2,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.wdepos.com/repository/maven-public/")
     }
 }
 
