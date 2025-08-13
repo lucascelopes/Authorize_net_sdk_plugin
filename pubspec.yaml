@@ -13,6 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  flutter_web_plugins:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +29,6 @@ flutter:
         pluginClass: AuthorizeNetSdkPlugin
       ios:
         pluginClass: AuthorizeNetSdkPlugin
+      web:
+        pluginClass: AuthorizeNetSdkPluginWeb
+        fileName: authorize_net_sdk_plugin_web.dart
