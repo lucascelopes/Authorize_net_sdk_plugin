@@ -20,27 +20,54 @@ Add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  authorize_net_sdk_plugin: ^0.0.1
+  authorize_net_sdk_plugin: ^0.0.4
+```
+
+### Android
+
+Add the WDePOS Maven repository to your `android/build.gradle`:
+
+```gradle
+repositories {
+    maven { url "https://maven.wdepos.com/repository/maven-public/" }
+}
+```
+
+### iOS
+
+Include the WDePOS SDK in your `ios/Podfile`:
+
+```ruby
+pod 'WDePOS/All'
 ```
 
 
 ## 🛠️ How to Use
-1. Import the plugin
-import ```'package:authorize_net_sdk_plugin/authorize_net_sdk_plugin.dart'; ```
-2. Create an instance of the plugin
-```final authNet = AuthorizeNetSdkPlugin();```
-4. Generate a payment nonce
-```
-final nonce = await authorizeNet.generateNonce(
-  apiLoginId: 'YOUR_API_LOGIN_ID',
-  clientKey: 'YOUR_CLIENT_KEY',
-  cardNumber: '4111111111111111',
-  expirationMonth: '12',
-  expirationYear: '25',
-  cardCode: '123',
-);
+1. Import the plugin:
 
-print('Generated nonce: $nonce');
+   ```dart
+   import 'package:authorize_net_sdk_plugin/authorize_net_sdk_plugin.dart';
+   ```
 
-// Send this nonce securely to your backend to complete the payment
-```
+2. Create an instance of the plugin:
+
+   ```dart
+   final authNet = AuthorizeNetSdkPlugin();
+   ```
+
+3. Generate a payment nonce:
+
+   ```dart
+   final nonce = await authNet.generateNonce(
+     apiLoginId: 'YOUR_API_LOGIN_ID',
+     clientKey: 'YOUR_CLIENT_KEY',
+     cardNumber: '4111111111111111',
+     expirationMonth: '12',
+     expirationYear: '25',
+     cardCode: '123',
+   );
+
+   print('Generated nonce: $nonce');
+
+   // Send this nonce securely to your backend to complete the payment
+   ```
