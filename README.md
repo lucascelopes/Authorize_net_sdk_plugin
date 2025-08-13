@@ -1,16 +1,13 @@
 # authorize_net_sdk_plugin 🚀
 
-A Flutter plugin for seamless and secure integration with the Authorize.Net API — enabling credit card, debit card, and other payment methods directly within your Flutter app.
+A Flutter plugin that securely generates Authorize.Net payment nonce tokens from card details within your Flutter app.
 
 ---
 
 ## ✨ Key Features
 
-- 🔐 Secure authentication with Authorize.Net API  
-- 💳 Create and manage payment transactions  
-- 💼 Support for multiple payment methods  
-- 🔍 Transaction status and history queries  
-- ⚡ Easy-to-use integration for Flutter applications  
+- 🔑 Generate secure payment nonce/token for Authorize.Net
+- 🌐 Simple Flutter integration on Android, iOS, and Web
 
 ---
 
@@ -20,7 +17,7 @@ Add the following to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  authorize_net_sdk_plugin: ^0.0.4
+  authorize_net_sdk_plugin: ^0.0.6
 ```
 
 ### Android
@@ -57,7 +54,10 @@ pod 'WDePOS/All'
 
 3. Generate a payment nonce:
 
+   Pass the `environment` parameter as `'test'` or `'production'` to select the Authorize.Net environment.
+
    ```dart
+   // Using the test environment
    final nonce = await authNet.generateNonce(
       apiLoginId: 'YOUR_API_LOGIN_ID',
       clientKey: 'YOUR_CLIENT_KEY',
@@ -65,12 +65,27 @@ pod 'WDePOS/All'
       expirationMonth: '12',
       expirationYear: '25',
       cardCode: '123',
+      environment: 'test', // or 'production'
     );
 
     print('Generated nonce: $nonce');
 
     // Send this nonce securely to your backend to complete the payment
     ```
+
+   To use the production environment, set `environment: 'production'`:
+
+   ```dart
+   final prodNonce = await authNet.generateNonce(
+      apiLoginId: 'YOUR_API_LOGIN_ID',
+      clientKey: 'YOUR_CLIENT_KEY',
+      cardNumber: '4111111111111111',
+      expirationMonth: '12',
+      expirationYear: '25',
+      cardCode: '123',
+      environment: 'production',
+    );
+   ```
 
 ### Web Support
 

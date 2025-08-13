@@ -14,6 +14,16 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
     return version;
   }
 
+  @override
+  Future<bool> isReady() async {
+    try {
+      final ready = await _channel.invokeMethod<bool>('isReady');
+      return ready ?? false;
+    } on PlatformException {
+      return false;
+    }
+  }
+
   // Método que chama o código nativo para gerar o nonce de pagamento
   @override
   Future<String?> generateNonce({
@@ -23,6 +33,7 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
     required String expirationMonth,
     required String expirationYear,
     required String cardCode,
+    String environment = 'test',
   }) async {
     final args = {
       'apiLoginId': apiLoginId,
@@ -31,9 +42,15 @@ class AuthorizeNetSdkPluginMethodChannel extends AuthorizeNetSdkPluginPlatform {
       'expirationMonth': expirationMonth,
       'expirationYear': expirationYear,
       'cardCode': cardCode,
+      'environment': environment,
     };
 
-    final nonce = await _channel.invokeMethod<String>('generateNonce', args);
-    return nonce;
+    try {
+      final nonce =
+          await _channel.invokeMethod<String>('generateNonce', args);
+      return nonce;
+    } on PlatformException catch (e) {
+      throw Exception('Erro (${e.code}): ${e.message}');
+    }
   }
 }

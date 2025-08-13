@@ -16,6 +16,30 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
+  test('isReady returns true when native reports ready', () async {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        return true;
+      }
+      return null;
+    });
+
+    final ready = await plugin.isReady();
+    expect(ready, true);
+  });
+
+  test('isReady returns false on platform error', () async {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        throw PlatformException(code: 'UNAVAILABLE');
+      }
+      return null;
+    });
+
+    final ready = await plugin.isReady();
+    expect(ready, false);
+  });
+
   test('getPlatformVersion returns correct version', () async {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getPlatformVersion') {
@@ -33,7 +57,8 @@ void main() {
 
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'generateNonce') {
-        // Você pode checar args aqui se quiser
+        final args = methodCall.arguments as Map;
+        expect(args['environment'], 'test');
         return fakeNonce;
       }
       return null;
@@ -46,8 +71,59 @@ void main() {
       expirationMonth: '12',
       expirationYear: '25',
       cardCode: '123',
+      environment: 'test',
     );
 
     expect(nonce, fakeNonce);
+  });
+
+  test('generateNonce throws PlatformException on missing parameter', () {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'generateNonce') {
+        final args = methodCall.arguments as Map;
+        if ((args['cardCode'] as String).isEmpty) {
+          throw PlatformException(code: 'INVALID_ARGS');
+        }
+      }
+      return null;
+    });
+
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: 'apiLoginId',
+        clientKey: 'clientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '',
+        environment: 'test',
+      ),
+      throwsA(isA<PlatformException>()),
+    );
+  });
+
+  test('generateNonce throws when isReady reports false', () {
+    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+      if (methodCall.method == 'isReady') {
+        return false;
+      }
+      if (methodCall.method == 'generateNonce') {
+        throw PlatformException(code: 'NOT_READY');
+      }
+      return null;
+    });
+
+    expect(
+      () => plugin.generateNonce(
+        apiLoginId: 'apiLoginId',
+        clientKey: 'clientKey',
+        cardNumber: '4111111111111111',
+        expirationMonth: '12',
+        expirationYear: '25',
+        cardCode: '123',
+        environment: 'test',
+      ),
+      throwsA(isA<PlatformException>()),
+    );
   });
 }

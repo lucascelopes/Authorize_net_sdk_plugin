@@ -22,8 +22,10 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
         return
       }
 
+      let environmentArg = args["environment"] as? String ?? "test"
+
       // Configuração do ambiente (teste ou produção)
-      let environment: WDEPOSEnvironment = .test
+      let environment: WDEPOSEnvironment = (environmentArg == "production") ? .production : .test
       
       // Configuração da autenticação do comerciante
       let merchantAuthentication = WDEPOSMerchantAuthentication()
@@ -50,6 +52,11 @@ public class AuthorizeNetSdkPlugin: NSObject, FlutterPlugin {
           result(FlutterError(code: "UNKNOWN", message: "Erro desconhecido", details: nil))
         }
       }
+    } else if call.method == "isReady" {
+      let ready = (NSClassFromString("WDEPOSService") != nil)
+      result(ready)
+    } else if call.method == "getPlatformVersion" {
+      result(UIDevice.current.systemVersion)
     } else {
       result(FlutterMethodNotImplemented)
     }
